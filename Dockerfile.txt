@@ -14,12 +14,11 @@ RUN npm install --production
 COPY . .
 
 # ✅ Installa oc CLI PRIMA di cambiare utente
-RUN apk add --no-cache curl bash libc6-compat \
- && curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz -o oc.tar.gz \
- && tar -xzf oc.tar.gz -C /usr/local/bin \
- && chmod +x /usr/local/bin/oc \
- && rm oc.tar.gz
- 
+RUN apk add --no-cache curl bash \
+    && curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz \
+       | tar -xz -C /usr/local/bin \
+    && chmod +x /usr/local/bin/oc
+
 # ✅ Assicura che oc sia nel PATH
 ENV PATH="/usr/local/bin:${PATH}"
 
