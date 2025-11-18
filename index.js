@@ -38,7 +38,7 @@ function runCommand(cmd, args) {
 
 function ocLogin() {
     console.log('Connessione a OpenShift tramite oc login...');
-    runCommand('oc', ['login', OC_SERVER, '-u', OC_USERNAME, '-p', OC_PASSWORD, '--insecure-skip-tls-verify', '-n', NAMESPACE, '--config=/tmp/kubeconfig']);
+    runCommand('oc', ['login', OC_SERVER, '-u', OC_USERNAME, '-p', OC_PASSWORD, '--insecure-skip-tls-verify', '-n', NAMESPACE]);
 }
 
 function getPods() {
