@@ -27,6 +27,8 @@ const PG_USER = process.env.PG_USER;
 const PG_PASSWORD = process.env.PG_PASSWORD;
 const PG_DATABASE = process.env.PG_DATABASE;
 
+const NODE_INTERVAL_CRON = process.env.NODE_INTERVAL_CRON || '*/5 * * * *';
+
 function runCommand(cmd, args) {
     const result = spawnSync(cmd, args, { encoding: 'utf-8', maxBuffer: 1024 * 1024 * 20 });
     if (result.error) throw result.error;
@@ -121,10 +123,37 @@ async function job() {
     }
 }
 
+const requiredVars = [
+  'NAMESPACE',
+  'OC_SERVER',
+  'OC_USERNAME',
+  'OC_PASSWORD',
+  'PG_HOST',
+  'PG_PORT',
+  'PG_USER',
+  'PG_PASSWORD',
+  'PG_DATABASE',
+  'NODE_INTERVAL_CRON'
+];
+
+const missingVars = requiredVars.filter(v => !process.env[v]);
+
+if (missingVars.length > 0) {
+  console.error(`Variabili mancanti: ${missingVars.join(', ')}`);
+  console.log('Il programma entrerà in sleep finché non vengono definite...');
+  
+  // Sleep infinito
+  setInterval(() => {
+    console.log('In attesa che le variabili siano definite...');
+  }, 60000); // ogni 60 secondi
+  return; // blocca l'esecuzione del resto
+}
+
+
 job();
 
 // Schedulazione ogni 5 minuti
-cron.schedule('*/5 * * * *', () => {
+cron.schedule(NODE_INTERVAL_CRON, () => {
     console.log('Esecuzione job ogni 5 minuti:', new Date().toISOString());
     job();
 });
