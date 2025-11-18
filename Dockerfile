@@ -1,20 +1,16 @@
-FROM node:18-alpine
-
-# Imposta la working directory
-WORKDIR /usr/src/app
-
-# Copia i file di definizione delle dipendenze
+# Usa immagine base Node.js LTS# Usa imm dipendenze
 COPY package*.json ./
 
-# Installa le dipendenze
+# Installa le dipendenze Node.js
 RUN npm install --production
 
 # Copia il codice sorgente
 COPY . .
 
-# Installa oc CLI (come root)
+# ✅ Installa oc CLI PRIMA di cambiare utente
 RUN apk add --no-cache curl bash \
-    && curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz | tar -xz -C /usr/local/bin \
+    && curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz \
+       | tar -xz -C /usr/local/bin \
     && chmod +x /usr/local/bin/oc
 
 # Espone la porta 8080
@@ -26,3 +22,8 @@ USER node
 
 # Comando di avvio
 CMD ["node", "index.js"]
+FROM node:18-alpine
+
+# Imposta la working directory
+WORKDIR /usr/src/app
+
