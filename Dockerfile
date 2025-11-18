@@ -4,7 +4,12 @@ FROM node:18-alpine
 # Imposta la working directory
 WORKDIR /usr/src/app
 
-# Copia i file di definizione delle dipendenze
+# Copia i file di definizione delle Imposta utente non root per compatibilità OpenShift# Copia i file di definizione delle dipendenze
+RUN chown -R node:node /usr/src/app
+USER node
+
+# Comando di avvio
+CMD ["node", "index.js"]
 COPY package*.json ./
 
 # Installa le dipendenze Node.js (solo produzione)
@@ -19,12 +24,8 @@ RUN apk add --no-cache curl bash \
        | tar -xz -C /usr/local/bin \
     && chmod +x /usr/local/bin/oc
 
+# ✅ Assicura che oc sia nel PATH
+ENV PATH="/usr/local/bin:${PATH}"
+
 # Espone la porta 8080
 EXPOSE 8080
-
-# Imposta utente non root per compatibilità OpenShift
-RUN chown -R node:node /usr/src/app
-USER node
-
-# Comando di avvio
-CMD ["node", "index.js"]
