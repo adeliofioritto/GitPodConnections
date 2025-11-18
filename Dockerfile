@@ -1,7 +1,13 @@
-# Usa immagine base Node.js LTS# Usa imm dipendenze
+# Usa immagine base Node.js LTS
+FROM node:18-alpine
+
+# Imposta la working directory
+WORKDIR /usr/src/app
+
+# Copia i file di definizione delle dipendenze
 COPY package*.json ./
 
-# Installa le dipendenze Node.js
+# Installa le dipendenze Node.js (solo produzione)
 RUN npm install --production
 
 # Copia il codice sorgente
@@ -22,7 +28,3 @@ USER node
 
 # Comando di avvio
 CMD ["node", "index.js"]
-FROM node:18-alpine
-
-# Imposta la working directory
-WORKDIR /usr/src/app
