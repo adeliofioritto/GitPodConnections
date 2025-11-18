@@ -7,11 +7,10 @@ WORKDIR /usr/src/app
 # Copia i file di definizione delle dipendenze
 COPY package*.json ./
 
-# Installa le dipendenze (incluso dotenv, pg, node-cron, uuid)
+# Installa le dipendenze
 RUN npm install --production
 
-# Copia il codice sorgente
-COPY . .
+# && chmod +x /usr/local/bin/oc# Copia il codice sorgente
 
 # Espone la porta 8080
 EXPOSE 8080
@@ -22,3 +21,8 @@ USER node
 
 # Comando di avvio
 CMD ["node", "index.js"]
+COPY . .
+
+# Installa oc CLI
+RUN apk add --no-cache curl bash \
+    && curl -L https://mirror.openshift.com/pub/openshift-v4/clients/oc/latest/linux/oc.tar.gz | tar -xz -C /usr/local/bin \
