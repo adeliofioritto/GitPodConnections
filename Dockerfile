@@ -24,12 +24,12 @@ RUN apk add --no-cache curl bash libc6-compat \
 ENV PATH="/usr/local/bin:${PATH}"
 
 # ✅ Configura KUBECONFIG per utente non root
-ENV KUBECONFIG=/tmp/kubeconfig
-RUN mkdir -p /tmp \
- && touch /tmp/kubeconfig \
- && chown node:node /tmp/kubeconfig \
- && chmod 600 /tmp/kubeconfig
-
+ENV KUBECONFIG=/usr/src/app/.kube/config
+RUN mkdir -p /usr/src/app/.kube \
+ && touch /usr/src/app/.kube/config \
+ && chown -R node:node /usr/src/app/.kube \
+ && chmod 700 /usr/src/app/.kube \
+ && chmod 600 /usr/src/app/.kube/config
  
 # Espone la porta 8080
 EXPOSE 8080
