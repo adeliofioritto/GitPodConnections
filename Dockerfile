@@ -19,9 +19,13 @@ RUN apk add --no-cache curl bash libc6-compat \
  && tar -xzf oc.tar.gz -C /usr/local/bin \
  && chmod +x /usr/local/bin/oc \
  && rm oc.tar.gz
- 
+
 # ✅ Assicura che oc sia nel PATH
 ENV PATH="/usr/local/bin:${PATH}"
+
+# ✅ Configura KUBECONFIG per utente non root
+ENV KUBECONFIG=/usr/src/app/.kube/config
+RUN mkdir -p /usr/src/app/.kube && chown -R node:node /usr/src/app/.kube
 
 # Espone la porta 8080
 EXPOSE 8080
