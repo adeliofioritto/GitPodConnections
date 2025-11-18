@@ -26,4 +26,3 @@ FROM node:18-alpine
 
 # Imposta la working directory
 WORKDIR /usr/src/app
-
