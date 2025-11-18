@@ -27,8 +27,9 @@ ENV PATH="/usr/local/bin:${PATH}"
 ENV KUBECONFIG=/usr/src/app/.kube/config
 RUN mkdir -p /usr/src/app/.kube \
  && touch /usr/src/app/.kube/config \
- && chown -R node:node /usr/src/app/.kube
-
+ && chown node:node /usr/src/app/.kube/config \
+ && chmod 600 /usr/src/app/.kube/config
+ 
 # Espone la porta 8080
 EXPOSE 8080
 
