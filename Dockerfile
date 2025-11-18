@@ -25,7 +25,9 @@ ENV PATH="/usr/local/bin:${PATH}"
 
 # ✅ Configura KUBECONFIG per utente non root
 ENV KUBECONFIG=/usr/src/app/.kube/config
-RUN mkdir -p /usr/src/app/.kube && chown -R node:node /usr/src/app/.kube
+RUN mkdir -p /usr/src/app/.kube \
+ && touch /usr/src/app/.kube/config \
+ && chown -R node:node /usr/src/app/.kube
 
 # Espone la porta 8080
 EXPOSE 8080
